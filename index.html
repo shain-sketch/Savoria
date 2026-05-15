@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SAVORIA – Restaurant Management System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --gold-dark: #9a7a28;
+      --cream: #faf6ef;
+      --dark: #0e0c08;
+      --dark-2: #1a160f;
+      --dark-3: #2a2318;
+      --text-muted: #8a7a5a;
+      --white: #ffffff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--dark);
+      color: var(--cream);
+      overflow-x: hidden;
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 60px;
+      background: linear-gradient(to bottom, rgba(14,12,8,0.95), transparent);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-logo span { font-style: italic; color: var(--cream); }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      opacity: 0.8;
+      transition: all 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); opacity: 1; }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--dark) !important;
+      padding: 10px 24px;
+      border-radius: 2px;
+      font-weight: 700 !important;
+      opacity: 1 !important;
+    }
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(201,168,76,0.12) 0%, transparent 60%),
+        linear-gradient(135deg, #0e0c08 0%, #1a160f 50%, #0e0c08 100%);
+    }
+    .hero-circle {
+      position: absolute;
+      right: 8%; top: 50%;
+      transform: translateY(-50%);
+      width: 520px; height: 520px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.2);
+      animation: pulse-ring 4s ease-in-out infinite;
+    }
+    @keyframes pulse-ring {
+      0%, 100% { transform: translateY(-50%) scale(1); }
+      50% { transform: translateY(-50%) scale(1.03); opacity: 0.7; }
+    }
+    .hero-dish-icon {
+      position: absolute;
+      right: 8%; top: 50%;
+      transform: translateY(-50%);
+      width: 520px; height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 160px;
+      animation: float-dish 6s ease-in-out infinite;
+    }
+    @keyframes float-dish {
+      0%, 100% { transform: translateY(-50%) translateY(0px); }
+      50% { transform: translateY(-50%) translateY(-20px); }
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 60px;
+      max-width: 700px;
+      animation: fade-up 1s ease forwards;
+    }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .hero-badge::before, .hero-badge::after {
+      content: ''; width: 30px; height: 1px; background: var(--gold);
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 7vw, 88px);
+      font-weight: 900;
+      line-height: 1.0;
+      margin-bottom: 28px;
+    }
+    h1 em { font-style: italic; color: var(--gold); display: block; }
+    .hero-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(250,246,239,0.7);
+      max-width: 500px;
+      margin-bottom: 48px;
+    }
+    .hero-buttons { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gold);
+      color: var(--dark);
+      padding: 16px 36px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.3s;
+      border: 2px solid var(--gold);
+    }
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--cream);
+      padding: 16px 36px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      border: 1px solid rgba(250,246,239,0.25);
+      transition: all 0.3s;
+    }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+    .stats-bar {
+      background: var(--dark-2);
+      border-top: 1px solid rgba(201,168,76,0.15);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      padding: 32px 60px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+    .stat-divider { width: 1px; height: 50px; background: rgba(201,168,76,0.2); }
+    section { padding: 100px 60px; }
+    .section-tag {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 700; line-height: 1.1; margin-bottom: 20px;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .section-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px; font-weight: 300;
+      line-height: 1.7; color: rgba(250,246,239,0.65);
+      max-width: 560px;
+    }
+    .features { background: var(--dark-2); }
+    .features-header { text-align: center; margin-bottom: 72px; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.1);
+    }
+    .feature-card {
+      background: var(--dark-2);
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s;
+      cursor: pointer;
+    }
+    .feature-card:hover { transform: translateY(-4px); }
+    .feature-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 72px; font-weight: 900;
+      color: rgba(201,168,76,0.07);
+      position: absolute; top: 20px; right: 24px;
+    }
+    .feature-icon { font-size: 36px; margin-bottom: 20px; display: block; }
+    .feature-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 700;
+      margin-bottom: 14px; color: var(--cream);
+    }
+    .feature-desc { font-size: 13px; line-height: 1.75; color: var(--text-muted); }
+    .showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .showcase-screen {
+      background: var(--dark-3);
+      border-radius: 12px;
+      border: 1px solid rgba(201,168,76,0.2);
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    }
+    .screen-topbar {
+      background: var(--dark-2);
+      padding: 12px 20px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+    .screen-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .screen-dot:nth-child(1) { background: #ff5f57; }
+    .screen-dot:nth-child(2) { background: #febc2e; }
+    .screen-dot:nth-child(3) { background: #28c840; }
+    .screen-body { padding: 24px; }
+    .screen-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .screen-kpi {
+      background: var(--dark); border-radius: 8px;
+      padding: 16px; border: 1px solid rgba(201,168,76,0.1);
+    }
+    .screen-kpi-val { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--gold); font-weight: 700; }
+    .screen-kpi-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-top: 4px; }
+    .modules { background: var(--dark-2); text-align: center; }
+    .modules-list { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 48px; }
+    .module-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px;
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 2px; font-size: 11px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--cream); text-decoration: none; transition: all 0.3s;
+    }
+    .module-chip:hover { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+    .cta-section { text-align: center; }
+    footer {
+      background: var(--dark-2);
+      border-top: 1px solid rgba(201,168,76,0.15);
+      padding: 40px 60px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; letter-spacing: 3px; color: var(--gold); }
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a { font-size: 11px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy { font-size: 11px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">SAVO<span>RIA</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu & Orders</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="menu.html" class="nav-cta">Get Started</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-dish-icon">🍽️</div>
+    <div class="hero-content">
+      <div class="hero-badge">Restaurant Management System</div>
+      <h1>Manage with <em>Mastery.</em></h1>
+      <p class="hero-desc">SAVORIA is a complete restaurant management platform — from reservations and orders to kitchen ops and analytics — crafted for the modern dining establishment.</p>
+      <div class="hero-buttons">
+        <a href="dashboard.html" class="btn-primary"><span>View Dashboard</span><span>→</span></a>
+        <a href="menu.html" class="btn-secondary"><span>🍴</span><span>Explore Menu</span></a>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-number">500+</div>
+      <div class="stat-label">Restaurants Served</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-number">98%</div>
+      <div class="stat-label">Uptime Guarantee</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-number">12K</div>
+      <div class="stat-label">Orders Daily</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-number">4.9★</div>
+      <div class="stat-label">User Rating</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Support</div>
+    </div>
+  </div>
+
+  <section class="features">
+    <div class="features-header">
+      <div class="section-tag">Core Modules</div>
+      <h2 class="section-title">Everything Your Restaurant <em>Needs to Thrive</em></h2>
+      <p class="section-desc">Six powerful modules working in perfect harmony.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-number">01</span>
+        <span class="feature-icon">📋</span>
+        <h3 class="feature-title">Order Management</h3>
+        <p class="feature-desc">Real-time order tracking from table to kitchen with instant updates.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-number">02</span>
+        <span class="feature-icon">🗓️</span>
+        <h3 class="feature-title">Reservations</h3>
+        <p class="feature-desc">Smart table allocation and booking with automated confirmations.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-number">03</span>
+        <span class="feature-icon">👨‍🍳</span>
+        <h3 class="feature-title">Kitchen Display</h3>
+        <p class="feature-desc">Live kitchen order queue with priority flags and ticket timers.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-number">04</span>
+        <span class="feature-icon">📊</span>
+        <h3 class="feature-title">Analytics & Reports</h3>
+        <p class="feature-desc">Deep revenue insights and staff performance dashboards.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-number">05</span>
+        <span class="feature-icon">🛒</span>
+        <h3 class="feature-title">Inventory Control</h3>
+        <p class="feature-desc">Auto stock deduction, low-stock alerts and supplier management.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-number">06</span>
+        <span class="feature-icon">💳</span>
+        <h3 class="feature-title">Billing & POS</h3>
+        <p class="feature-desc">Fast checkout with multi-payment support and digital receipts.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="modules">
+    <div class="section-tag">Explore the System</div>
+    <h2 class="section-title">Navigate <em>Every Module</em></h2>
+    <div class="modules-list">
+      <a href="menu.html" class="module-chip">🍽️ Menu Management</a>
+      <a href="menu.html" class="module-chip">📋 Order Taking</a>
+      <a href="dashboard.html" class="module-chip">📊 Revenue Analytics</a>
+      <a href="dashboard.html" class="module-chip">🗓️ Table Reservations</a>
+      <a href="dashboard.html" class="module-chip">👨‍🍳 Kitchen Display</a>
+      <a href="dashboard.html" class="module-chip">🛒 Inventory</a>
+      <a href="dashboard.html" class="module-chip">👥 Staff Roster</a>
+      <a href="menu.html" class="module-chip">💳 Billing & POS</a>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="section-tag">Ready to Transform?</div>
+    <h2 class="section-title">Your Restaurant, <em>Elevated.</em></h2>
+    <div class="hero-buttons" style="justify-content:center; margin-top:40px;">
+      <a href="dashboard.html" class="btn-primary">Go to Dashboard →</a>
+      <a href="menu.html" class="btn-secondary">🍴 View Menu System</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">SAVORIA</div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu & Orders</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 SAVORIA Restaurant Management System</div>
+  </footer>
+
+</body>
+</html>
